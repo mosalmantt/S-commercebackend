@@ -32,11 +32,15 @@ const firebaseConfig = {
     measurementId:process.env.REACT_APP_MEASURMENT_ID
   };
 
+  const getItem = {
+    key:"helo salman",
+    data:"louna@33"
+  }
   app.get('/tellygo/firebase/config', (req, res) => {
     res.json(firebaseConfig)
   });
 app.get("/helo",(req, res)=>{
-res.send("HElo salman")
+res.json(getItem)
 })
 
 const PORT = process.env.PORT || 2000
