@@ -35,6 +35,9 @@ const firebaseConfig = {
   app.get('/tellygo/firebase/config', (req, res) => {
     res.json(firebaseConfig)
   });
+app.get("/helo",(req, res)=>{
+res.send("HElo salman")
+})
 
 const PORT = process.env.PORT || 2000
 app.listen(PORT, () => {
