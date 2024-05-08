@@ -10,8 +10,16 @@ const verifyToken = (req, res, next) => {
         })
     }
     try {
+        const currentTimestamp = Math.floor(Date.now() / 1000);
         const decoded = jwt.verify(actualToken,process.env.JWT_SECRET);
-        next();
+        if(decoded.exp && decoded.exp < currentTimestamp){
+            res.json({
+                StatusCode: 401,
+                Message: "Token has expired",
+            });
+        }else{
+            next();
+        }
     } catch (error) {
         res.json({
             StatusCode: 401,

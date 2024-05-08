@@ -12,11 +12,11 @@ router.post("/register", async (req, res) => {
     const { username, email, password, phone } = req.body
     if (username && email && password && phone) {
         try {
-            const existingUser = await User.findOne({ $or: [{ email }, { username }] })
+            const existingUser = await User.findOne({ $or: [{ email }, { phone}] })
             if (existingUser) {
                 res.json({
                     StatusCode: 409,
-                    Message: 'Username or email is already taken'
+                    Message: 'email or phone number is already taken'
                 })
             }
             const stringPassword = String(password);
@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
                 password: hashPassword,
                 phone
             })
-            newUser.save()
+            await newUser.save()
             res.json({
                 StatusCode: 201,
                 data: {
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
         try {
             const existingUser = await User.findOne({ email })
             if (existingUser) {
-                const token = jwt.sign({userId:email},process.env.JWT_SECRET,{expiresIn:'2h'})
+                const token = jwt.sign({userId:email},process.env.JWT_SECRET,{expiresIn:'10s'})
                 const passwordMatch = await bcrypt.compare(password, existingUser.password)
                 if (passwordMatch) {
                     res.json({
